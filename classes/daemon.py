@@ -6,7 +6,6 @@ class Daemon:
 		self.threadList = []
 		self.activeIndex = 0
 
-
 	def store(self,threadself):
 		self.threadList.append(threadself)
 
@@ -18,12 +17,17 @@ class Daemon:
 		for i in range(0,len(self.threadList)):
 			if self.threadList[i].name == _name:
 				return i
+
 	def listConnections(self):
 		for i in self.threadList:
 			print(f"Name: {i.name} Type: {i.type} Address: {i.address} Port {i.port}\n")
 
 	def changeActive(self,_name):
 		self.activeIndex = self.getIndex(_name)
+
+	def printThreadList(self):
+		for i in self.threadList:
+			print(i)
 
 	def passData(self,_data):
 		self.threadList[self.activeIndex].send(_data)
@@ -46,5 +50,4 @@ class Daemon:
 		if len(self.threadList) > 0:
 			for i in self.threadList:
 				i.kill()
-
 		return sys.exit("Exited succesfully")

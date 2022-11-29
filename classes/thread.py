@@ -12,9 +12,7 @@ class Thread(threading.Thread):
 		self.connection = None
 		self.address = _address
 		self.port = _port
-		self.daemon = daemon
-		self.start()
-
+		self.daemon = daemon 
 
 	def connect(self):
 		self.daemon.store(self)
@@ -44,17 +42,16 @@ class Thread(threading.Thread):
 		else:
 			pass
 
-
 	def pause(self):
 		self.paused = True
 	def unpause(self):
 		self.paused = False
-
 
 	def kill(self):
 		self.connection.close()
 		return
 
 	async def start(self):
+		print(f"started {self.ident}")
 		self.connect()
 		await self.create()
