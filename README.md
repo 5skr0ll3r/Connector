@@ -1,2 +1,2 @@
 # Connector
-Is a multi remote session handler written in python3
+Is a multi session handler written in python3
