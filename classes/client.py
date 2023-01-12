@@ -1,4 +1,4 @@
-import socket, asyncio, threading
+import socket
 
 
 class Client:
@@ -22,21 +22,11 @@ class Client:
 		self.socket.connect((self.target,self.port))
 
 	async def receive(self):
-		self.dataReceived =  self.socket.recv(3000).decode('utf-8')
+		self.dataReceived =  self.socket.recv(4096).decode('utf-8')
 		return self.dataReceived
 
 	def respond(self,data):
 		self.socket.sendall((data).encode())
-
-	def reconnect(self,_name):
-		pass
-		#will save the connections info somewhere locally 
-		#and if reconnect is triggered we will specify the name given
-		#to the saved connection and try to reconnect to the waiting reverse shell
-		#this will help if a connection is lost, or incase of a backdoor on the target
-		#system, this requires that the reverse shell used will have the wait for reconnection feature
-		#so by default  this will be not used
-		#ill make some sample reverse shells that will work fine with this functionality
 
 	def close(self):
 		self.socket.close()

@@ -1,5 +1,4 @@
-import socket,threading
-
+import socket,sys
 
 class Listener:
 	def __init__(self, _interface,_port):
@@ -18,33 +17,38 @@ class Listener:
 		self.address = None
 		self.dataReceived = None
 		self.socket = None
+		self.fail = False
 
 	def run(self):
-		self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-		#self.socket.setblocking(0)
-		self.socket.bind((self.interface,self.port))
-		self.socket.listen()
+		try:
+			self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			self.socket.bind((self.interface,self.port))
+			self.socket.listen()
+		except OSError:
+			sys.stdout.write("Something went wrong on listeners creation\nPlease make sure the interface you specified exists\n")
+			sys.stdout.flush()
+			self.close()
+			self.fail = True
 
 
 	async def accept(self):
-		self.connection, self.address = self.socket.accept()
+		if not self.fail:
+			self.connection, self.address = self.socket.accept()
+		else:
+			self.close()
 
 	async def receive(self):
-		self.dataReceived = self.connection.recv(3000).decode('utf-8')
-		return self.dataReceived
+		if not self.fail:
+			self.dataReceived = self.connection.recv(4096).decode('utf-8')
+			return self.dataReceived
+		else:
+			self.close()
 
 	def respond(self,data):
-		self.connection.sendall(data.encode())
-
-	def reconnect(self,_name):
-		pass
-		#will save the connections info somewhere locally 
-		#and if reconnect is triggered we will specify the name given
-		#to the saved connection and try to reconnect to the waiting reverse shell
-		#this will help if a connection is lost, or incase of a backdoor on the target
-		#system, this requires that the reverse shell used will have the wait for reconnection feature
-		#so by default  this will be not used
-		#ill make some sample reverse shells that will work fine with this functionality
+		if not self.fail:
+			self.connection.sendall(data.encode())
+		else:
+			self.close()
 
 	def close(self):
 		self.socket.close()
