@@ -39,7 +39,7 @@ class Listener:
 
 	async def receive(self):
 		if not self.fail:
-			self.dataReceived = self.connection.recv(4096).decode('utf-8')
+			self.dataReceived = self.connection.recv(8000).decode('utf-8')#4096
 			return self.dataReceived
 		else:
 			self.close()
