@@ -19,6 +19,7 @@ takes 3 arguments space seperated
 - Port
 - Alias
 
+
 **listen**
 create a listener and awaites for remote connection
 takes 3 arguments
@@ -26,19 +27,23 @@ takes 3 arguments
 - Port
 - Alias
 
+
 **shell**
 fronts the specified session
 takes 1 argument
 - Alias
+
 
 **kill**
 terminates the specified session
 takes 1 argument
 - Alias
 
+
 **exit**
 Terminates all sessions and exits the program
 takes 0 arguments
+
 
 ## Shell commands:
 
